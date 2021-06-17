@@ -1,0 +1,86 @@
+react-flash-cards-v2 - roteiro
+==============================
+
+(x) Criar novo app a partir do react-flash-cards-v1
+
+(x) Montar um fake Back End a partir do arquivo 
+   json e da biblioteca json-server 
+
+(x) Testar rotas no navegador
+
+(x) Inicializar tanto o Front End quanto o Back End
+
+(x) Trocar nome do app em index.html
+
+() Fazer com que os dados sejam lidos do Back End 
+
+   (x) Criar apiService para "regras de negócio" do
+      Back End  
+
+   (x) Criar httpService para executar as requisições 
+      propriamente ditas. Comentar sobre a boa 
+      prática do isolamento de dependências (axios)
+   
+   (x) Eliminar data/allFlashcards.js 
+
+   () Adaptar state "allCards" para utilizar o Back End
+      com useEffect. Mostrar com promises, async/await 
+      e IIFE
+
+   () Incluir state para "loading"
+   () Incluir state para "error"
+
+() Instalar e utilizar o componente react-tabs 
+   https://github.com/reactjs/react-tabs
+
+() Criar 3 abas
+   - Listagem
+   - Cadastro 
+   - Estudo
+
+() Migrar o que já foi implementado para a aba "Estudo"
+
+() Em "Listagem", mostrar todos os cards com opção 
+   de exclusão e edição. Criar componente FlashCardItem
+   para tal. Implementar exclusão no Front End, por 
+   enquanto
+
+() Criar state para definir o modo de operação 
+   (edição/inserção)   
+
+() Fazer com que o clique nos ícones de edição da 
+   listagem ativem a edição do flash card 
+   automaticamente. Criar state para isso 
+   e utilizar as props selectedIndex e 
+   onSelect de react-tabs
+
+() Em "Cadastro", criar botão para ativar 
+   a inserção de novos flash cards
+
+() Em "Cadastro", criar componente Form e montar 
+   formulário para inserção/edição de cards, 
+   reaproveitando o componente TextInput
+
+() Criar componente TextArea para melhorar o 
+   cadastro da descrição do FlashCard
+
+() Criar botões "Salvar" e "Limpar", 
+   para persistir a inserção/edição 
+   através de onSubmit do form. 
+   Mostrar que, no form, quando 
+   há o evento onSubmit, é possível enviar 
+   os dados apertando "Enter". É importante 
+   implementar também o event.preventDefault()
+
+() Fazer com que a persistência de inclusão,
+   exclusão e edição seja também 
+   refletida no Back End
+
+() Simular alguma regra de negócio para ser 
+   validada antes da inclusão de flash cards.
+   Ex: não pode ter o texto "Angular".
+
+() Limpar o app para disponibilização, 
+   removendo arquivos "desnecessários",
+   como por exemplo a pasta "node_modules". 
+   Use a biblioteca rimraf para isso

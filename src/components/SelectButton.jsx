@@ -33,6 +33,7 @@ export default function SelectButton({
   return (
     <>
       <select
+        className="mb-3 border p-3 rounded-lg shadow-md font-semibold"
         name={nameSelector}
         id={idSelector}
         onChange={handleValueSelector}

@@ -10,6 +10,7 @@ import {
   apiGetAllCities,
   apiGetAllElectionsOfCity,
 } from '../services/apiService';
+import { formatNumber } from '../helpers/formatNumberHelpers';
 
 export default function ElectionsPage() {
   const [allCities, setAllCities] = useState([]);
@@ -17,6 +18,10 @@ export default function ElectionsPage() {
   const [allElectionsOfCity, setElectionsOfCity] = useState([]);
   const [totalVotes, setTotalVotes] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const [totalVotesOfCity, setTotalVotesOfCity] = useState(null);
+  const [presenceVotesOfCity, setPresenceVotesOfCity] = useState(null);
+  const [absenceVotesOfCity, setAbsenceVotesOfCity] = useState(null);
 
   useEffect(() => {
     async function getAllCities() {
@@ -47,19 +52,26 @@ export default function ElectionsPage() {
 
   function handleValueSelector(cityId) {
     if (cityId) {
-      apiGetAllElectionsOfCity(cityId).then(res => {
-        const newArrayOrdened = res.sort((a, b) => {
-          if (a.votes > b.votes) {
-            return -1;
-          }
-          if (a.votes < b.votes) {
-            return 1;
-          }
-          // a must be equal to b
-          return 0;
-        });
-        setElectionsOfCity(newArrayOrdened);
-      });
+      async function getAllElectionsOfCity() {
+        try {
+          const electionsOfCity = await apiGetAllElectionsOfCity(cityId);
+          setElectionsOfCity(electionsOfCity);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+      getAllElectionsOfCity();
+
+      const { absence, votingPopulation, presence } = allCities.find(
+        city => city.id === cityId
+      );
+
+      setPresenceVotesOfCity(formatNumber(presence));
+      setAbsenceVotesOfCity(formatNumber(absence));
+      setTotalVotesOfCity(formatNumber(votingPopulation));
     }
   }
 
@@ -78,22 +90,37 @@ export default function ElectionsPage() {
   if (!loading) {
     mainJSX = (
       <>
-        <div className="flex flex-row items-center justify-center space-y-6">
+        <div className="flex flex-col items-center space-y-2">
           <SelectButton
             data={allCities}
-            nameSelector="Cidade dos heróis"
+            nameSelector="cityOfHeroes"
             onSelectChange={handleValueSelector}
           />
+          <div className="flex flex-row justify-between flex-wrap">
+            <span className="mr-8">
+              <strong>Comparecimento: </strong>
+              {presenceVotesOfCity}
+            </span>
+            <span className="mr-8">
+              <strong>Abstenção: </strong>
+              {absenceVotesOfCity}
+            </span>
+            <span>
+              <strong>Total de Eleitores: </strong>
+              {totalVotesOfCity}
+            </span>
+          </div>
         </div>
         <Cards>
-          {allElectionsOfCity.map(a => {
+          {allElectionsOfCity.map((data, index) => {
             return (
               <Card
-                key={a.id}
-                numVotes={a.votes}
+                key={data.id}
+                numVotes={data.votes}
                 heroes={allCandidates}
-                idCandidate={a.candidateId}
+                idCandidate={data.candidateId}
                 totalVotes={totalVotes}
+                place={index++}
               ></Card>
             );
           })}

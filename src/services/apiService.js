@@ -9,7 +9,11 @@ export async function apiGetAllCandidates() {
 
 export async function apiGetAllCities() {
   const allCities = await get(`${BACK_END_URL}cities`);
-  return allCities;
+  const ordenedAllCities = allCities.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
+  return ordenedAllCities;
 }
 
 export async function apiGetAllElections() {
@@ -19,7 +23,15 @@ export async function apiGetAllElections() {
 
 export async function apiGetAllElectionsOfCity(cityId) {
   const allElections = await get(`${BACK_END_URL}election?cityId=${cityId}`);
-  return allElections;
-}
 
-//http://localhost:3001/election?cityId=d2dab6a2-3029-45a5-89f2-fcbaee387758
+  const ordenedAllElections = allElections.sort((a, b) => {
+    if (a.votes > b.votes) {
+      return -1;
+    }
+    if (a.votes < b.votes) {
+      return 1;
+    }
+    return 0;
+  });
+  return ordenedAllElections;
+}
